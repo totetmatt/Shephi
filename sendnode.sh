@@ -15,10 +15,10 @@ function help {
 for (( i=3;i<$#;i++)); do 
    property=${args[${i}]}
    if ! [[ ${args[${i}]} =~ $re ]] ; then
-      properties="$properties, '"${property//:/\':\'}"'"
+      properties="$properties '"${property//:/\':\'}"'"
    else
-      properties="$properties, '"${property//:/\':}
+      properties="$properties '"${property//:/\':}
    fi 
  done
-echo $properties
-curl "$1/workspace0?operation=updateGraph" -d "{'$3':{'$2':{'label':'$2' $properties}}}"
+properties=${properties//\' \'/\',\'}
+curl "$1/workspace0?operation=updateGraph" -d "{'$3':{'$2':{$properties}}}"

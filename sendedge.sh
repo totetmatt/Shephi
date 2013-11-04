@@ -21,4 +21,4 @@ for (( i=5;i<$#;i++)); do
    fi 
  done
 echo $properties
-curl "$1/workspace0?operation=updateGraph" -d "{'$5':{'$2':{'label':'$2' $properties}}}"
+curl "$1/workspace0?operation=updateGraph" -d "{'$5':{'$2--$3':{'source':'$2', 'target':'$3' ,'directed':$4 $properties}}}"
