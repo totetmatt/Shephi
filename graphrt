@@ -1,5 +1,5 @@
 function help() {
-echo "Usage : $0 http://myGephiInstance:myport http://MyHostToTraceroute"
+echo "Usage : $0 http://myGephiInstance:myport MyHostToTraceroute"
 }
 
 hostname=`hostname`
