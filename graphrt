@@ -1,0 +1,29 @@
+function help() {
+echo "Usage : $0 http://myGephiInstance:myport http://MyHostToTraceroute"
+}
+
+hostname=`hostname`
+hostip="127.0.0.1"
+
+
+traceroute $2 | tail -f -n +2 | while read line ; do
+        line=${line//\*/}
+        ./sendnode.sh $1 "$hostip" an "label:$hostname"
+
+        nxthostname=`echo $line | awk '{print $2}'`
+        nxthostip=`echo $line| awk '{print $3}'`
+        nxthostip=${nxthostip//\(/}
+        nxthostip=${nxthostip//\)/}
+        nxtresponsetime=`echo $line| awk '{print $4}'`
+        if [ -n "$nxthostip" ]; then
+
+
+                echo ">> $nxthostname $nxthostip $nxtresponsetime <<"
+                echo "-- $line"
+                ./sendnode.sh $1 "$nxthostip" an "label:$nxthostname"
+                ./sendedge.sh $1 "$hostip" "$nxthostip" True ae
+
+                hostname=$nxthostname
+                hostip=$nxthostip
+        fi
+done
